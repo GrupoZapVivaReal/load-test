@@ -1,0 +1,40 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.com.github.lkishalmi.gatling:gradle-gatling-plugin:0.7.1"
+    }
+}
+
+apply plugin: "com.github.lkishalmi.gatling"
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    gatling 'org.scala-lang:scala-library:2.12.3'
+    gatling 'org.scalaj:scalaj-http_2.12:2.3.0'
+    gatling 'org.json4s:json4s-native_2.12:3.5.3'
+    gatling 'com.amazonaws:aws-java-sdk-s3:1.11.185'
+}
+
+gatling {
+    toolVersion = '2.3.0'
+    jvmArgs = ['-server', '-Xms512M', '-Xmx512M', '-XX:MaxMetaspaceSize=512m']
+    simulations = { include "**/*Simulation.scala" }
+}
+
+task('uploadReport', type: JavaExec) {
+    main = 'com.vivareal.search.config.SimulationResultsProcessor'
+    args = ['build/reports/gatling', System.getenv('REPORT_VERSION') ?: 'SNAPSHOT']
+    jvmArgs = System.properties.findAll { prop -> ['gatling', 'api', 'aws', 'slack'].findAll { allowedKey -> prop.key.startsWith("$allowedKey.") } }.collect { "-D$it" }
+    classpath sourceSets.gatling.runtimeClasspath
+    classpath configurations.gatling
+}
+
+uploadReport.mustRunAfter gatlingRun

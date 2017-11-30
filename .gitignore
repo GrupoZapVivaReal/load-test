@@ -1,0 +1,25 @@
+.idea/
+.gradle/
+.classpath
+.project
+.vscode
+
+.settings/
+
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+build/
+gradle/
+!gradle-wrapper.jar
+
+out/
+deploy/k8s/dist/*
+
+load-test.iml
