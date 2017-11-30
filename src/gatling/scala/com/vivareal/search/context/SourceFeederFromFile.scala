@@ -12,7 +12,7 @@ object SourceFeederFromFile extends SourceFeeder {
   def feeds(config: Config): Array[Map[String, String]] = {
     fromFile(new File(getClass.getClassLoader.getResource(config.getString("scenario.file")).getPath))
       .getLines
-      .map(line => Map("line" -> line))
+      .map(value => Map("value" -> value))
       .map(feed => applyPagination(feed))
       .toArray
   }
