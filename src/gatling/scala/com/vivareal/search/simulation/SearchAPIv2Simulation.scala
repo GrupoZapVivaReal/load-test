@@ -25,8 +25,6 @@ class SearchAPIv2Simulation extends Simulation {
 
   private val path = globalConfig.getString("api.http.path")
 
-  private val index = globalConfig.getString("api.index")
-
   private val scenariosConf = ScenariosLoader.load()
 
   private var scenarios = scenariosConf.getObjectList("scenarios").asScala
@@ -40,10 +38,10 @@ class SearchAPIv2Simulation extends Simulation {
       def updatedConfig = config.withValue("scenario.users", fromAnyRef(if (users > 0) users else config.getInt("scenario.users")))
         .withValue("scenario.repeat", fromAnyRef(if (repeat > 0) repeat else config.getInt("scenario.repeat")))
 
-      scenario(updatedConfig.getString("scenario.decription"))
+      scenario(updatedConfig.getString("scenario.description"))
         .repeat(updatedConfig.getInt("scenario.repeat")) {
           feed(feeder(updatedConfig).random)
-            .exec(http(updatedConfig.getString("scenario.title")).get(path + index + updatedConfig.getString("scenario.query")))
+            .exec(http(updatedConfig.getString("scenario.title")).get(path + updatedConfig.getString("scenario.query")))
         }.inject(rampUsers(updatedConfig.getInt("scenario.users")) over (globalConfig.getInt("gatling.rampUp") seconds))
     }).toList
 
