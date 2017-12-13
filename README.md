@@ -12,13 +12,17 @@ For more details about how to do override, see [How To Run](#how-to-run) section
 
 ## How To Build
 
-To build this project, you need to execute this command:
+To build this project, you need to execute these commands:
+
+```sh
+git submodule update --init --recursive
+```
 
 ```sh
 make build
 ```
 
-This command generates the `vivareal/search-api-v2:load-test` docker image.
+The `vivareal/search-api-v2:load-test` docker image will be created.
 
 ## How To Run
 
