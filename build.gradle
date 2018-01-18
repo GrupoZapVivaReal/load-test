@@ -6,10 +6,17 @@ buildscript {
     }
     dependencies {
         classpath "gradle.plugin.com.github.lkishalmi.gatling:gradle-gatling-plugin:0.7.1"
+        classpath "com.github.ben-manes:gradle-versions-plugin:+"
     }
 }
 
 apply plugin: "com.github.lkishalmi.gatling"
+apply plugin: 'com.github.ben-manes.versions'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.4.1'
+    distributionType = Wrapper.DistributionType.ALL
+}
 
 repositories {
     jcenter()
