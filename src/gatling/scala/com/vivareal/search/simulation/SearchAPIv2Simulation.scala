@@ -41,7 +41,7 @@ class SearchAPIv2Simulation extends Simulation {
       scenario(updatedConfig.getString("scenario.description"))
         .repeat(updatedConfig.getInt("scenario.repeat")) {
           feed(feeder(updatedConfig).random)
-            .exec(http(updatedConfig.getString("scenario.title")).get(path + updatedConfig.getString("scenario.query")))
+            .exec(http(updatedConfig.getString("scenario.title")).get((if (updatedConfig.getString("scenario.path").isEmpty) path else updatedConfig.getString("scenario.path")) + updatedConfig.getString("scenario.query")))
         }.inject(rampUsers(updatedConfig.getInt("scenario.users")) over (globalConfig.getInt("gatling.rampUp") seconds))
     }).toList
 
