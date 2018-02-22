@@ -1,4 +1,4 @@
-FROM vivareal/base-images:alpine-3.5-java-8-jdk
+FROM vivareal/base-images:alpine-3.7-java-8-jdk
 
 ARG ARTIFACT
 

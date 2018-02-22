@@ -18,9 +18,7 @@ object SearchAPIv2Repository {
 
   val path = globalConfig.getString("api.http.path")
 
-  val index = globalConfig.getString("api.index")
-
-  val url = s"http://${http.getString("base")}$path$index"
+  val url = s"http://${http.getString("base")}$path"
 
   def getFacets(config: Config): List[(String, String)] = {
     def title = config.getString("scenario.title")
