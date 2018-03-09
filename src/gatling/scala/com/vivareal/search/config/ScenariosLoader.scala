@@ -2,8 +2,8 @@ package com.vivareal.search.config
 
 import java.lang.System.getProperty
 
+import com.typesafe.config.ConfigFactory.parseString
 import com.typesafe.config.{Config, ConfigFactory}
-import com.typesafe.config.ConfigFactory.{parseString}
 import com.vivareal.search.config.S3Client.readFromBucket
 
 object ScenariosLoader {
