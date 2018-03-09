@@ -10,7 +10,6 @@ import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.amazonaws.services.s3.model._
 import com.typesafe.config.ConfigFactory
-import com.vivareal.search.config.SlackNotifier.aws
 
 object S3Client {
 

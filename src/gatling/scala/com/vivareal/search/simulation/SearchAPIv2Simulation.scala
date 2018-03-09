@@ -4,6 +4,7 @@ import com.typesafe.config.ConfigFactory.load
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import com.vivareal.search.config.ScenariosLoader
 import com.vivareal.search.config.SearchAPIv2Feeder.feeder
+import com.vivareal.search.util.URLUtils.encode
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -27,26 +28,27 @@ class SearchAPIv2Simulation extends Simulation {
 
   private val scenariosConf = ScenariosLoader.load()
 
-  private var scenarios = scenariosConf.getObjectList("scenarios").asScala
+  private val scenarios = scenariosConf.getObjectList("scenarios").asScala
     .map(configValue => configValue.toConfig)
     .filter(config => !runExcludeScenariosSpl.contains(config.getString("scenario.id")))
     .filter(config => "_all".equals(runIncludeScenarios) || runIncludeScenariosSpl.contains(config.getString("scenario.id")))
     .map(config => {
-
-      println(s"Preparing current scenario: ${config.getString("scenario.title")}")
-
       def updatedConfig = config.withValue("scenario.users", fromAnyRef(if (users > 0) users else config.getInt("scenario.users")))
         .withValue("scenario.repeat", fromAnyRef(if (repeat > 0) repeat else config.getInt("scenario.repeat")))
+
+      def url = if (updatedConfig.getString("scenario.path").isEmpty) path else updatedConfig.getString("scenario.path")
+      def query = updatedConfig.getString("scenario.query")
+
+      println(s"Preparing current scenario: ${config.getString("scenario.title")} - url $url and query ${encode(query)}")
 
       scenario(updatedConfig.getString("scenario.description"))
         .repeat(updatedConfig.getInt("scenario.repeat")) {
           feed(feeder(updatedConfig).random)
-            .exec(http(updatedConfig.getString("scenario.title")).get((if (updatedConfig.getString("scenario.path").isEmpty) path else updatedConfig.getString("scenario.path")) + updatedConfig.getString("scenario.query")))
+            .exec(http(updatedConfig.getString("scenario.title")).get(encode(url + query)))
         }.inject(rampUsers(updatedConfig.getInt("scenario.users")) over (globalConfig.getInt("gatling.rampUp") seconds))
     }).toList
 
   setUp(scenarios)
     .protocols(httpConf)
     .maxDuration(globalConfig.getInt("gatling.maxDuration") seconds)
-
 }

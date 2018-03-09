@@ -1,6 +1,7 @@
 package com.vivareal.search.repository
 
 import com.typesafe.config.{Config, ConfigFactory}
+import com.vivareal.search.util.URLUtils.encode
 import org.json4s.native.JsonMethods._
 import org.json4s.{DefaultFormats, JValue}
 
@@ -12,11 +13,9 @@ import scalaj.http.{Http, HttpResponse}
 object SearchAPIv2Repository {
   implicit val formats = DefaultFormats
 
-  val globalConfig = ConfigFactory.load()
-
-  val http = globalConfig.getConfig("api.http")
-
-  val path = globalConfig.getString("api.http.path")
+  private val globalConfig = ConfigFactory.load()
+  private val http = globalConfig.getConfig("api.http")
+  private val path = globalConfig.getString("api.http.path")
 
   val url = s"http://${http.getString("base")}$path"
 
@@ -26,9 +25,9 @@ object SearchAPIv2Repository {
       (list, facet) => {
         def fct = facet.toConfig
 
-        println(s"* Getting facets to... $title")
+        println(s"* Getting facets to... $title using url $url and query ${encode(fct.getString("query"))}")
 
-        val response: HttpResponse[String] = Http(s"$url?${fct.getString("query")}")
+        val response: HttpResponse[String] = Http(s"$url${encode(fct.getString("query"))}")
           .options(readTimeout(http.getInt("readTimeout")), connTimeout(http.getInt("connTimeout")))
           .asString
 
@@ -47,7 +46,7 @@ object SearchAPIv2Repository {
   def getIds(users: Int, repeat: Int, range: Int = 1): Iterator[String] = {
     val size = users * repeat * range
     println(s"* Getting stream ids.. (size:$size)")
-    Source.fromURL(s"$url/stream?includeFields=id&sort=&size=$size")
+    Source.fromURL(s"$url/stream?includeFields=id&size=$size")
       .getLines
       .take(size)
       .map(parse(_))
