@@ -1,3 +1,6 @@
 [submodule "make"]
 	path = make
 	url = git@github.com:VivaReal/make-snippets.git
+[submodule "code-style"]
+	path = code-style
+	url = git@github.com:VivaReal/code-style.git
