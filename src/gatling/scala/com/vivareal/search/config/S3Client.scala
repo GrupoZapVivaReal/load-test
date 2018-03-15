@@ -16,6 +16,7 @@ object S3Client {
   private val config = ConfigFactory.load()
 
   private val aws = config.getConfig("aws")
+  private val bucketName = aws.getString("s3.bucket")
 
   private val client = AmazonS3ClientBuilder.standard().withCredentials(new DefaultAWSCredentialsProviderChain).withRegion(aws.getString("region")).build()
 
@@ -23,10 +24,10 @@ object S3Client {
   acl.grantPermission(GroupGrantee.AllUsers, Permission.Read)
 
   def upload(file: File, fileName: String): Unit = {
-    client.putObject(new PutObjectRequest(aws.getString("s3.bucket"), s"${aws.getString("s3.folder")}/${aws.getString("s3.reports")}/$fileName", file).withAccessControlList(acl))
+    client.putObject(new PutObjectRequest(bucketName, s"${aws.getString("s3.folder")}/${aws.getString("s3.reports")}/$fileName", file).withAccessControlList(acl))
   }
 
-  def readFromBucket(bucketName: String, key: String): String = {
+  def readFromBucket(key: String): String = {
     client.getObjectAsString(bucketName, key)
   }
 

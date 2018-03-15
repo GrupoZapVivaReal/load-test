@@ -22,7 +22,7 @@ git submodule update --init --recursive
 make build
 ```
 
-The `vivareal/search-api-v2:load-test` docker image will be created.
+The `vivareal/load-test:load-test` docker image will be created.
 
 ## How To Run
 

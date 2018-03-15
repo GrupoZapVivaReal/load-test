@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: search
+  labels:
+    app: ${DEPLOY_NAME}
+    env: ${ENV}
+    process: service
+    product: search
+    release: ${VERSION}
+  name: ${DEPLOY_NAME}
+spec:
+  template:
+    spec:
+      containers:
+      - name: ${DEPLOY_NAME}
+        image: ${IMAGE_NAME}
+        imagePullPolicy: "Always"
+        env:
+        - name: ENV
+          value: ${ENV}
+        - name: REPORT_VERSION
+          value: "${VERSION}"
+        - name: JAVA_OPTS
+          value: "${RUN_OPTS}"
+        - name: USER_TIMEZONE
+          value: ${USER_TIMEZONE}
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              key: AWS_ACCESS_KEY_ID
+              name: aws-credentials
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              key: AWS_SECRET_ACCESS_KEY
+              name: aws-credentials
+        - name: SLK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: SLK_TOKEN
+              name: slack-notify
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2048Mi
+          requests:
+            cpu: 1000m
+            memory: 2048Mi
+      restartPolicy: Never
