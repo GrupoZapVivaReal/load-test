@@ -20,12 +20,12 @@ artifact: ;
 build: image ;
 
 run-local: endpoint build
-    @docker run --rm \
-        -e AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) \
-        -e AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY) \
-        -e REPORT_VERSION=$(REPORT_VERSION) \
-        -e SLK_TOKEN=$(SLK_TOKEN) \
-        $(IMAGE_NAME) -Dapi.http.base=$(LT_ENDPOINT) $(LT_EXTRA_ARGS)
+	@docker run --rm \
+			-e AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) \
+			-e AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY) \
+			-e REPORT_VERSION=$(REPORT_VERSION) \
+			-e SLK_TOKEN=$(SLK_TOKEN) \
+			$(IMAGE_NAME) -Dapi.http.base=$(LT_ENDPOINT) $(LT_EXTRA_ARGS)
 
 ENV:=prod
 DEPLOY_NAME?=$(PROJECT_NAME)-$(COMMIT_HASH)-$(shell echo `date "+%s"`)
@@ -35,4 +35,4 @@ include make/k8s/Makefile
 deploy: endpoint process-templates deploy-k8s
 
 endpoint:
-    $(if $(value LT_ENDPOINT),,$(error "LT_ENDPOINT is required for Makefile"))
+	$(if $(value LT_ENDPOINT),,$(error "LT_ENDPOINT is required for Makefile"))
