@@ -33,7 +33,7 @@ dependencies {
 gatling {
     toolVersion = '2.3.0'
     jvmArgs = ['-server', '-Xms512M', '-Xmx512M', '-XX:MaxMetaspaceSize=512m']
-    simulations = { include "**/*Simulation.scala" }
+    simulations = { include System.getProperty('gatling.simulations.include', '**/SearchAPIv2Simulation.scala') }
 }
 
 task('uploadReport', type: JavaExec) {
