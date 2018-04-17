@@ -17,17 +17,18 @@ class SimpleRequestSimulation extends Simulation {
   val users = config.getInt("scenario.users")
   val rampUp = config.getInt("gatling.rampUp")
   val maxDuration = config.getInt("gatling.maxDuration")
-  val pathsFile = "./src/gatling/resources/data/" + config.getString("graylog.pathsFile")
+  val urisFile = "./src/gatling/resources/data/" + config.getString("graylog.urisFile")
+  val uriField = config.getString("graylog.uriField")
 
   val httpConf = http.baseURL(baseURL)
 
-  downloadCSV(config.getString("graylog.query"), config.getString("graylog.fields"), pathsFile)
-  val feeder = csv(pathsFile).shuffle
+  downloadCSV(config.getString("graylog.query"), uriField, urisFile)
+  val feeder = csv(urisFile).shuffle
 
   val scn = scenario("SimpleRequestSimulation").during(maxDuration seconds) {
     feed(feeder)
       .exec(http("SimpleRequests")
-      .get("${ClientRequestURI}"))
+      .get("${" + uriField + "}"))
   }
 
   setUp(scn.inject(rampUsers(users) over(rampUp seconds)))
