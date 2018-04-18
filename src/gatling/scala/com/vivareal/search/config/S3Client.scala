@@ -31,6 +31,10 @@ object S3Client {
     client.getObjectAsString(bucketName, key)
   }
 
+  def download(key: String, path: String): ObjectMetadata = {
+    client.getObject(new GetObjectRequest(bucketName, key), new File(path + key))
+  }
+
   def uploadReport(sourceFolderPath: File, prefix: String = "") = {
     val path = sourceFolderPath.toPath
     walkFileTree(path, new SimpleFileVisitor[Path] {
