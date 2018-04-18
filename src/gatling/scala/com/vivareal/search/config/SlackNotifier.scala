@@ -26,7 +26,7 @@ object SlackNotifier {
           .postData(
             s"""{"text": "load-test in *${api.getString("http.base")}* executed with success.\nReport *$prefix${source.getName}* generated. See more details <$reportUrl|here>.",
                        "channel": "${slack.getString("channel")}",
-                       "username": "searchapi-v2",
+                       "username": "${slack.getString("username")}",
                        "icon_emoji": ":gatling:"}""")
           .asString
         s"* Slack message sent successfully: ${response.code}"
