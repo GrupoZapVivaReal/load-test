@@ -23,7 +23,7 @@ class SimpleRequestSimulation extends Simulation {
   val httpConf = http.baseURL(baseURL)
 
   downloadCSV(config.getString("graylog.query"), uriField, urisFile)
-  val feeder = csv(urisFile).shuffle
+  val feeder = csv(urisFile).circle
 
   val scn = scenario("SimpleRequestSimulation").during(maxDuration seconds) {
     feed(feeder)

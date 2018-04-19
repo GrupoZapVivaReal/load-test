@@ -102,7 +102,7 @@ make run LT_EXTRA_ARGS="-Dgatling.simulations.include=**/SimpleRequestSimulation
 
 ## Simple Request Simularion
 
-It's a `Simulation` that downloads a `csv` file from `Graylog` API based on a query and executes the resulting `URI`s requests `shuffled` and `during` a configured time.
+It's a `Simulation` that downloads a `csv` file from `Graylog` API based on a query and executes the resulting `URI`s requests in `circle` and `during` a configured time.
 
 ### Configuration
 
