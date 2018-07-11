@@ -1,3 +1,4 @@
+.SILENT:
 include make/git/Makefile
 
 ORG:=vivareal
