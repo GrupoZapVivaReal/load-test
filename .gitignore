@@ -21,7 +21,7 @@ build/
 out/
 deploy/k8s/dist/*
 
-load-test.iml
+*.iml
 
 # CSV feeds
 *.csv
