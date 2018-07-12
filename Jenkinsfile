@@ -5,7 +5,7 @@ node {
 
     withCredentials([
         string(credentialsId: 'SLK_TOKEN', variable: 'SLK_TOKEN'),
-        string(credentialsId: 'K8S_SEARCH_TOKEN_' + env.ENV.toUpperCase(), variable: 'K8S_TOKEN')
+        string(credentialsId: 'K8S_SEARCH_TOKEN_' + env.ENV.toUpperCase(), variable: 'K8S_TOKEN'),
         string(credentialsId: 'CLUSTER_NAME_' + env.ENV.toUpperCase(), variable: 'CLUSTER_NAME')
     ]){
         def slkChannel = '-Dslack.channel=' + env.SLK_CHANNEL
