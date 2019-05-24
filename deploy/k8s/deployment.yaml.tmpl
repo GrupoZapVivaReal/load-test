@@ -12,6 +12,12 @@ metadata:
 spec:
   template:
     spec:
+      nodeSelector:
+        role.vivareal.io/ondemand: "true"
+      tolerations:
+      - effect: PreferNoSchedule
+        key: role.vivareal.io/ondemand
+        value: "true"
       containers:
       - name: ${DEPLOY_NAME}
         image: ${IMAGE_NAME}
@@ -48,3 +54,17 @@ spec:
             cpu: 3000m
             memory: 4Gi
       restartPolicy: Never
+---
+# PDB
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: ${DEPLOY_NAME}
+  namespace: search
+spec:
+  selector:
+    matchLabels:
+      app: ${DEPLOY_NAME}
+      process: service
+      product: search
+  minAvailable: 1
