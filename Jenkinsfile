@@ -24,8 +24,9 @@ node {
         def ltExtraArgs=(slkChannel + apiHttpPath + gatlingMaxduration + gatlingUsers + gatlingRepeat + gatlingReadtimeout + gatlingConntimeout + s3Bucket + s3Path + gatlingIncludeScenarios + gatlingExcludeScenarios)
 
         def targetEndpoint = env.LT_ENDPOINT
+        def k8s_cluster = env.K8S_CLUSTER.replace("*env*", env.ENV)
 
-        def command = 'make LT_ENDPOINT=' + targetEndpoint +' LT_EXTRA_ARGS="' + ltExtraArgs + '" deploy'
+        def command = 'make K8S_CLUSTER=' + k8s_cluster +  ' LT_ENDPOINT=' + targetEndpoint +' LT_EXTRA_ARGS="' + ltExtraArgs + '" deploy'
         def result = sh(script: command, returnStatus: true)
 
         sendToSlack(result, env.SLK_CHANNEL, targetEndpoint, ltExtraArgs)
