@@ -8,10 +8,9 @@ include make/pro/Makefile
 
 ARTIFACT:=$(PROJECT_NAME)-$(VERSION)
 
-DOCKER_REGISTRY_DOMAIN=prod-search-docker-registry.vivareal.com
-
+COMMIT_HASH=$(shell git rev-parse --short=7 HEAD)
 CONTAINER_ID:=$(VERSION)
-IMAGE_NAME:=$(ORG)/load-test:$(PROJECT_NAME)
+IMAGE_NAME:=$(ORG)/load-test:$(COMMIT_HASH)
 include make/doc/Makefile
 
 REPORT_VERSION?=$(VERSION)
