@@ -12,6 +12,7 @@ node {
         def apiHttpPath = env.API_HTTP_PATH != '' ? ' -Dapi.http.path=' + env.API_HTTP_PATH : ''
         def gatlingMaxduration = env.GATLING_MAXDURATION != '' ? ' -Dgatling.maxDuration=' + env.GATLING_MAXDURATION : ''
         def gatlingUsers = env.GATLING_USERS != '' ? ' -Dgatling.users=' + env.GATLING_USERS : ''
+        def gatlingPageSize = env.PAGE_SIZE != '' ? ' -Dgatling.size=' + env.PAGE_SIZE : ''
         def gatlingRepeat = env.GATLING_REPEAT != '' ? ' -Dgatling.repeat=' + env.GATLING_REPEAT : ''
         def gatlingReadtimeout = env.GATLING_READTIMEOUT != '' ? ' -Dgatling.readTimeout=' + env.GATLING_READTIMEOUT : ''
         def gatlingConntimeout = env.GATLING_CONNTIMEOUT != '' ? ' -Dgatling.connTimeout=' + env.GATLING_CONNTIMEOUT : ''
@@ -21,7 +22,7 @@ node {
         def s3Bucket = env.S3_BUCKET != '' ? ' -Daws.s3.bucket=' + env.S3_BUCKET : ''
         def s3Path = env.S3_PATH != '' ? ' -Dscenarios.s3.path=' + env.S3_PATH : ''
 
-        def ltExtraArgs=(slkChannel + apiHttpPath + gatlingMaxduration + gatlingUsers + gatlingRepeat + gatlingReadtimeout + gatlingConntimeout + s3Bucket + s3Path + gatlingIncludeScenarios + gatlingExcludeScenarios)
+        def ltExtraArgs=(slkChannel + apiHttpPath + gatlingMaxduration + gatlingUsers + gatlingPageSize + gatlingRepeat + gatlingReadtimeout + gatlingConntimeout + s3Bucket + s3Path + gatlingIncludeScenarios + gatlingExcludeScenarios)
 
         def targetEndpoint = env.LT_ENDPOINT
         def k8s_cluster = env.K8S_CLUSTER.replace("*env*", env.ENV)
