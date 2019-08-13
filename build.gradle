@@ -32,6 +32,7 @@ dependencies {
 
 gatling {
     toolVersion = '2.3.0'
+    logLevel = 'DEBUG'
     jvmArgs = ['-server', '-Xms512M', '-Xmx512M', '-XX:MaxMetaspaceSize=512m']
     simulations = { include System.getProperty('gatling.simulations.include', '**/SearchAPIv2Simulation.scala') }
 }
