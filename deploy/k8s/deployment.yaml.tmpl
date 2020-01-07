@@ -15,12 +15,6 @@ spec:
         annotations:
               iam.amazonaws.com/role: arn:aws:iam::444914307613:role/search-load-test-role
     spec:
-      nodeSelector:
-        role.vivareal.io/ondemand: "true"
-      tolerations:
-      - effect: PreferNoSchedule
-        key: role.vivareal.io/ondemand
-        value: "true"
       containers:
       - name: ${DEPLOY_NAME}
         image: ${IMAGE_NAME}
@@ -41,9 +35,9 @@ spec:
               name: slack-notify
         resources:
           limits:
-            cpu: 2000m
-            memory: 2Gi
+            cpu: 3000m
+            memory: 4Gi
           requests:
-            cpu: 2000m
-            memory: 2Gi
+            cpu: 500m
+            memory: 500Mi
       restartPolicy: Never
