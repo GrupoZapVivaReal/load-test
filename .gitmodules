@@ -1,6 +1,6 @@
 [submodule "code-style"]
 	path = code-style
-	url = git@github.com:GrupoZapVivaReal/code-style.git
+	url = git@github.com:grupozap/code-style.git
 [submodule "make"]
 	path = make
-	url = git@github.com:GrupoZapVivaReal/make-snippets.git
+	url = git@github.com:grupozap/make-snippets.git
