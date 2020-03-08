@@ -42,5 +42,5 @@ def sendToSlack(result, slkChannel, targetEndpoint, ltExtraArgs) {
         status = 'ERROR'
     }
     def deployMessage = "Deployment on :k8s: for *${env.JOB_NAME}* realized with *${status}*.\n*Target:* ${targetEndpoint}\n*Extra arguments configuration:* ${ltExtraArgs}"
-    slackSend channel: "${slkChannel}", color: color, message: "Job <${env.BUILD_URL}/console|#${env.BUILD_NUMBER}> *${env.JOB_NAME}*, in *${env.AWS_DEFAULT_REGION}* with *${env.ENV}*.\n${deployMessage}", teamDomain: 'vivareal'
+    slackSend channel: "${slkChannel}", color: color, message: "Job <${env.BUILD_URL}/console|#${env.BUILD_NUMBER}> *${env.JOB_NAME}*, in *${env.AWS_DEFAULT_REGION}* with *${env.ENV}*.\n${deployMessage}", teamDomain: 'grupozap'
 }
