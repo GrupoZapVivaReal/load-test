@@ -21,10 +21,10 @@ object SlackNotifier {
   def sendReportLink(source: File, prefix: String): Unit = {
     val slackResp = Option(SLK_TOKEN_VALUE).map(token =>
       if (slack.getBoolean("notify")) {
-        val reportUrl = s"https://s3.amazonaws.com/${aws.getString("s3.bucket")}/${aws.getString("s3.folder")}/${aws.getString("s3.reports")}/$prefix${source.getName}/index.html"
+        val reportDir = s"s3://${aws.getString("s3.bucket")}/${aws.getString("s3.folder")}/${aws.getString("s3.reports")}/$prefix${source.getName}"
         val response = Http(s"https://hooks.slack.com/services/$token")
           .postData(
-            s"""{"text": "load-test in *${api.getString("http.base")}* executed with success.\nReport *$prefix${source.getName}* generated. See more details <$reportUrl|here>.",
+            s"""{"text": "load-test in *${api.getString("http.base")}* executed with success.\nReport *$prefix${source.getName}* generated. To see more details run `aws s3 sync $reportDir .`.",
                        "channel": "${slack.getString("channel")}",
                        "username": "${slack.getString("username")}",
                        "icon_emoji": ":gatling:"}""")
