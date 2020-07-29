@@ -57,9 +57,28 @@ class CasioAPISimulation extends Simulation {
         .exec(
           http("CreateNegotiation")
           .post("/v1/negotiation")
-          .body(StringBody("""{"listingOrigin":"ZAP","origin":"ZAP", "advertiserId": "${advertiserId}", "externalId": "${externalId}", "type":"RENTAL", "listingId": "${listingId}", "accountId": "${accountId}", "targetValue": 1234, "contact":{"name":"Marcio Silva","document":"69536583046","documentType":"CPF","phoneNumber":"1122223333","email":"marcio@mailinator.com"},"offer":{"from":"CONTACT","paymentType":"IN_CASH","tenantInfo":{"adults":1,"liveWith":"ALONE"},"value":1234}}"""))
+          .body(StringBody("""{"listingOrigin":"ZAP","origin":"ZAP","advertiserId":"${advertiserId}","externalId":"${externalId}","type":"RENTAL","listingId":"${listingId}","accountId":"${accountId}","targetValue":1234,"contact":{"name":"Marcio Silva","document":"69536583046","documentType":"CPF","phoneNumber":"1122223333","email":"marcio@mailinator.com"}}"""))
           .check(bodyString.saveAs("createNegotiationResponse"))
           .check(jsonPath("$.id").exists.saveAs("negotiationId"))
+        )
+        .exec(
+          http("CreateOffer")
+          .post("/v1/negotiation/offer")
+          .body(StringBody("""{"negotiationId":${negotiationId},"from":"CONTACT","paymentType":"IN_CASH","tenantInfo":{"adults":1,"liveWith":"ALONE"},"value":1000}"""))
+          .check(bodyString.saveAs("createOfferResponse"))
+          .check(jsonPath("$.id").exists.saveAs("offerId"))
+        )
+        .exec(
+          http("CreateCounterOffer")
+          .put("/v1/negotiation/offer/${offerId}/counter-offer")
+          .body(StringBody("""{"negotiationId":${negotiationId},"from":"ADVERTISER","paymentType":"IN_CASH","value":1100}"""))
+          .check(bodyString.saveAs("createCounterOfferResponse"))
+          .check(jsonPath("$.id").exists.saveAs("counterOfferId"))
+        )
+        .exec(
+          http("AcceptCounterOffer")
+          .put("/v1/negotiation/offer/${counterOfferId}/accept")
+          .body(StringBody("""{"acceptType":"CONTACT"}"""))
         )
         .exec(
           http("CancelNegotiation")
