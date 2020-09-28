@@ -29,10 +29,7 @@ spec:
         - name: USER_TIMEZONE
           value: ${USER_TIMEZONE}
         - name: SLK_TOKEN
-          valueFrom:
-            secretKeyRef:
-              key: SLK_TOKEN
-              name: slack-notify
+          value: "vault:squad-search-ranking/kubernetes/${ENV}/slack-notify#SLK_TOKEN"
         resources:
           limits:
             cpu: 3000m
