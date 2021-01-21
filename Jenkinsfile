@@ -21,13 +21,14 @@ node {
 
         def s3Bucket = env.S3_BUCKET != '' ? ' -Daws.s3.bucket=' + env.S3_BUCKET : ''
         def s3Path = env.S3_PATH != '' ? ' -Dscenarios.s3.path=' + env.S3_PATH : ''
+        def image = env.IMAGE_NAME
 
         def ltExtraArgs=(slkChannel + apiHttpPath + gatlingMaxduration + gatlingUsers + gatlingPageSize + gatlingRepeat + gatlingReadtimeout + gatlingConntimeout + s3Bucket + s3Path + gatlingIncludeScenarios + gatlingExcludeScenarios)
 
         def targetEndpoint = env.LT_ENDPOINT
         def k8s_cluster = env.K8S_CLUSTER.replace("*env*", env.ENV)
 
-        def command = 'make K8S_CLUSTER=' + k8s_cluster +  ' LT_ENDPOINT=' + targetEndpoint +' LT_EXTRA_ARGS="' + ltExtraArgs + '" deploy'
+        def command = 'make K8S_CLUSTER=' + k8s_cluster +  ' LT_ENDPOINT=' + targetEndpoint +' LT_EXTRA_ARGS="' + ltExtraArgs + '"  IMAGE_NAME=' + image + ' deploy'
         def result = sh(script: command, returnStatus: true)
 
         sendToSlack(result, env.SLK_CHANNEL, targetEndpoint, ltExtraArgs)
